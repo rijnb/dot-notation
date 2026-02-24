@@ -2,6 +2,8 @@
 
 Convert between JSON arrays and dot-notation.
 
+![Screenshot](screenshot.png)
+
 For example, these two are identical:
 ```json
 [
