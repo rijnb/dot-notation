@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>dot-notation</title>
+  </head>
+  <body>
+    <div id="app">
+      <h1>dot-notation</h1>
+      <p class="subtitle">Convert between JSON arrays and dot-notation</p>
+      <div class="converter">
+        <div class="panel">
+          <label for="nested">JSON Array</label>
+          <textarea id="nested" spellcheck="false"></textarea>
+        </div>
+        <div class="controls">
+          <button id="flatten-btn">Flatten →</button>
+          <button id="unflatten-btn">← Unflatten</button>
+        </div>
+        <div class="panel">
+          <label for="flat">Dot-Notation</label>
+          <textarea id="flat" spellcheck="false"></textarea>
+        </div>
+      </div>
+      <p id="error" class="error" hidden></p>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

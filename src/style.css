@@ -1,0 +1,121 @@
+:root {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  line-height: 1.5;
+  color: #213547;
+  background-color: #f8f9fa;
+}
+
+body {
+  margin: 0;
+  padding: 2rem;
+  min-width: 320px;
+}
+
+#app {
+  max-width: 960px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 0.25rem;
+}
+
+.subtitle {
+  color: #666;
+  margin-top: 0;
+  margin-bottom: 2rem;
+}
+
+.converter {
+  display: flex;
+  gap: 1rem;
+  align-items: stretch;
+}
+
+.panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.panel label {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  text-align: left;
+}
+
+.panel textarea {
+  flex: 1;
+  min-height: 320px;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', monospace;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  resize: vertical;
+  background: #fff;
+  color: #213547;
+}
+
+.panel textarea:focus {
+  outline: none;
+  border-color: #646cff;
+  box-shadow: 0 0 0 2px rgba(100, 108, 255, 0.2);
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.75rem;
+  padding-top: 1.5rem;
+}
+
+.controls button {
+  padding: 0.6rem 1.2rem;
+  border: 1px solid #646cff;
+  border-radius: 6px;
+  background-color: #646cff;
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.15s, border-color 0.15s;
+}
+
+.controls button:hover {
+  background-color: #535bf2;
+  border-color: #535bf2;
+}
+
+.controls button:active {
+  background-color: #4349d6;
+}
+
+.error {
+  color: #c0392b;
+  background: #fdecea;
+  border: 1px solid #f5c6cb;
+  border-radius: 6px;
+  padding: 0.75rem;
+  margin-top: 1rem;
+  text-align: left;
+  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', monospace;
+  font-size: 0.85rem;
+}
+
+@media (max-width: 640px) {
+  .converter {
+    flex-direction: column;
+  }
+
+  .controls {
+    flex-direction: row;
+    justify-content: center;
+    padding-top: 0;
+  }
+}
