@@ -2,6 +2,26 @@
 
 Convert between JSON arrays and dot-notation.
 
+For example, these two are identical:
+```json
+[
+  {
+    "a": {
+      "b": {
+        "x": [
+          "p",
+          "q"
+        ]
+      },
+      "c": "z"
+    }
+  }
+]
+```
+and
+```
+a.b.x.p, a.b.x.q, a.c.z
+```
 ## Usage
 
 ### Development
