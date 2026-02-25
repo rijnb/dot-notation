@@ -108,6 +108,40 @@ h1 {
   font-size: 0.85rem;
 }
 
+.toolbox {
+  margin-top: 2rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #fff;
+  text-align: left;
+  font-size: 0.85rem;
+}
+
+.toolbox h3 {
+  margin: 0 0 0.5rem;
+  font-size: 0.9rem;
+  color: #213547;
+}
+
+.toolbox ul {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.toolbox li {
+  margin-bottom: 0.25rem;
+}
+
+.toolbox a {
+  color: #646cff;
+  text-decoration: none;
+}
+
+.toolbox a:hover {
+  text-decoration: underline;
+}
+
 @media (max-width: 640px) {
   .converter {
     flex-direction: column;
