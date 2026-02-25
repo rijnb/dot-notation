@@ -1,9 +1,10 @@
 import "./style.css"
-import {flatten, unflatten} from "./dot-notation.js"
+import {flatten, flattenDotOnly, unflatten} from "./dot-notation.js"
 
 const nestedEl = document.querySelector("#nested")
 const flatEl = document.querySelector("#flat")
-const flattenBtn = document.querySelector("#flatten-btn")
+const flattenGroupedBtn = document.querySelector("#flatten-grouped-btn")
+const flattenDotBtn = document.querySelector("#flatten-dot-btn")
 const unflattenBtn = document.querySelector("#unflatten-btn")
 const errorEl = document.querySelector("#error")
 
@@ -33,10 +34,19 @@ function clearError() {
   errorEl.hidden = true
 }
 
-flattenBtn.addEventListener("click", () => {
+flattenGroupedBtn.addEventListener("click", () => {
   clearError()
   try {
     flatEl.value = flatten(nestedEl.value)
+  } catch (e) {
+    showError(`Flatten error: ${e.message}`)
+  }
+})
+
+flattenDotBtn.addEventListener("click", () => {
+  clearError()
+  try {
+    flatEl.value = flattenDotOnly(nestedEl.value)
   } catch (e) {
     showError(`Flatten error: ${e.message}`)
   }
