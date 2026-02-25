@@ -20,10 +20,40 @@ For example, these two are identical:
   }
 ]
 ```
-and
+and (using grouped notation):
+```
+a(b.x(p, q), c.z)
+```
+or (using dot-only notation):
 ```
 a.b.x.p, a.b.x.q, a.c.z
 ```
+
+## Syntax
+
+The dot-notation uses the following grammar:
+
+```
+field-inclusion-list ::= field-list
+field-list           ::= field | field ',' field-list
+field                ::= name | name '.' field | name field-set
+field-set            ::= '(' field-set-list ')'
+field-set-list       ::= field | field ',' field-list
+```
+
+When a node has a single child, the dot notation is used: `a.b.c`.
+When a node has multiple children, a field-set with parentheses groups them: `a(b, c)`.
+
+### Examples
+
+| Dot-notation | JSON |
+|---|---|
+| `a.b.c` | `[{"a":{"b":"c"}}]` |
+| `a(b, c)` | `[{"a":["b","c"]}]` |
+| `a.b(c, d)` | `[{"a":{"b":["c","d"]}}]` |
+| `a(b.c, b.d)` | `[{"a":{"b":["c","d"]}}]` |
+| `a(b(x(p, q), y), c.z)` | `[{"a":{"b":{"x":["p","q"],"y":null},"c":"z"}}]` |
+
 ## Usage
 
 ### Development

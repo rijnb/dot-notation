@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import { flatten, unflatten } from './dot-notation.js'
+import { flatten, flattenDotOnly, unflatten } from './dot-notation.js'
 
 let passed = 0
 let failed = 0
@@ -66,10 +66,10 @@ test('handles multiple nested objects', () => {
   assert.equal(flatten('[{"A": {"B": "C"}}, {"D": "E"}]'), 'A.B.C, D.E')
 })
 
-test('flattens null leaf values without appending null', () => {
+test('flattens null leaf values with grouped notation', () => {
   assert.equal(
     flatten('[{"A": {"B": {"X": {"P": null, "Q": null}, "Y": null}, "C": {"Z": null}}}]'),
-    'A.B.X.P, A.B.X.Q, A.B.Y, A.C.Z'
+    'A(B(X(P, Q), Y), C.Z)'
   )
 })
 
@@ -81,11 +81,52 @@ test('throws TypeError for non-array JSON', () => {
   assert.throws(() => flatten('{"a": 1}'), TypeError)
 })
 
-test('flattens arrays without numeric indices', () => {
+test('flattens arrays with grouped notation', () => {
   assert.equal(
     flatten('[{"a":{"b":["c","d"]}},{"a":"c"}]'),
+    'a.b(c, d), a.c'
+  )
+})
+
+console.log()
+console.log('flattenDotOnly:')
+
+test('flattenDotOnly flattens a string element', () => {
+  assert.equal(flattenDotOnly('["A"]'), 'A')
+})
+
+test('flattenDotOnly flattens an object element to dot-notation', () => {
+  assert.equal(flattenDotOnly('[{"B": "C"}]'), 'B.C')
+})
+
+test('flattenDotOnly flattens deeply nested objects', () => {
+  assert.equal(flattenDotOnly('[{"B": {"C": "D"}}]'), 'B.C.D')
+})
+
+test('flattenDotOnly flattens object with multiple keys into separate dot-paths', () => {
+  assert.equal(flattenDotOnly('[{"B": "C", "D": "E"}]'), 'B.C, D.E')
+})
+
+test('flattenDotOnly uses dot notation instead of grouped notation for arrays', () => {
+  assert.equal(
+    flattenDotOnly('[{"a":{"b":["c","d"]}},{"a":"c"}]'),
     'a.b.c, a.b.d, a.c'
   )
+})
+
+test('flattenDotOnly uses dot notation for null leaf values', () => {
+  assert.equal(
+    flattenDotOnly('[{"A": {"B": {"X": {"P": null, "Q": null}, "Y": null}, "C": {"Z": null}}}]'),
+    'A.B.X.P, A.B.X.Q, A.B.Y, A.C.Z'
+  )
+})
+
+test('flattenDotOnly handles empty array', () => {
+  assert.equal(flattenDotOnly('[]'), '')
+})
+
+test('flattenDotOnly handles mixed string and object elements', () => {
+  assert.equal(flattenDotOnly('["A", {"B": "C"}]'), 'A, B.C')
 })
 
 console.log()
@@ -130,6 +171,34 @@ test('unflattens shared prefix paths into arrays', () => {
   )
 })
 
+test('unflattens grouped notation with field-set', () => {
+  assert.equal(
+    unflatten('a.b(c, d), a.c'),
+    '[{"a":{"b":["c","d"]}},{"a":"c"}]'
+  )
+})
+
+test('unflattens nested field-sets', () => {
+  assert.equal(
+    unflatten('A(B(X(P, Q), Y), C.Z)'),
+    '[{"A":{"B":{"X":["P","Q"],"Y":null},"C":"Z"}}]'
+  )
+})
+
+test('unflattens simple field-set at root', () => {
+  assert.equal(
+    unflatten('a(b, c)'),
+    '[{"a":["b","c"]}]'
+  )
+})
+
+test('unflattens field-set with dotted children', () => {
+  assert.equal(
+    unflatten('a(b.c, b.d)'),
+    '[{"a":{"b":["c","d"]}}]'
+  )
+})
+
 test('unflattens with conflict into separate elements', () => {
   assert.equal(
     unflatten('a.b.x.p, a.b.x.q, a.b.y, a.c.z'),
@@ -167,11 +236,17 @@ test('round-trips object with multiple keys', () => {
   assert.equal(unflatten(flattened), '[{"a":"b","c":"d"}]')
 })
 
-test('round-trips array values without numeric indices', () => {
+test('round-trips array values with grouped notation', () => {
   const input = '[{"a":{"b":["c","d"]}},{"a":"c"}]'
   const flattened = flatten(input)
-  assert.equal(flattened, 'a.b.c, a.b.d, a.c')
+  assert.equal(flattened, 'a.b(c, d), a.c')
   assert.equal(unflatten(flattened), '[{"a":{"b":["c","d"]}},{"a":"c"}]')
+})
+
+test('round-trips deeply nested grouped object', () => {
+  const input = '[{"A":{"B":{"X":{"P":null,"Q":null},"Y":null},"C":{"Z":null}}}]'
+  const flattened = flatten(input)
+  assert.equal(flattened, 'A(B(X(P, Q), Y), C.Z)')
 })
 
 console.log()
